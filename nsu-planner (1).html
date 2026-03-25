@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSU Subject Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#05070f;
+  --surf:#0c0f1d;
+  --surf2:#111524;
+  --surf3:#181c2e;
+  --border:rgba(255,255,255,0.06);
+  --border2:rgba(255,255,255,0.12);
+  --blue:#4f8ef7;
+  --purple:#8b5cf6;
+  --green:#10d48e;
+  --amber:#f59e0b;
+  --red:#f43f5e;
+  --text:#eef0f8;
+  --muted:#7880a4;
+  --muted2:#4a5070;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+/* PREMIUM BACKGROUND */
+.bg-aurora{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 110% 70% at -5% -10%,rgba(79,142,247,0.2) 0%,transparent 55%),
+    radial-gradient(ellipse 80% 60% at 105% 5%,rgba(139,92,246,0.15) 0%,transparent 50%),
+    radial-gradient(ellipse 70% 80% at 50% 110%,rgba(16,212,142,0.08) 0%,transparent 50%);
+  animation:aurShift 14s ease-in-out infinite alternate;
+}
+@keyframes aurShift{0%{opacity:1;transform:scale(1);}100%{opacity:.8;transform:scale(1.04) translate(15px,-10px);}}
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,0.017) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.017) 1px,transparent 1px);
+  background-size:55px 55px;
+}
+.bg-dots{
+  position:fixed;top:50px;right:30px;
+  width:240px;height:240px;z-index:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(79,142,247,0.28) 1px,transparent 1px);
+  background-size:16px 16px;
+  mask-image:radial-gradient(ellipse 80% 80% at 60% 40%,black 0%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 80% at 60% 40%,black 0%,transparent 100%);
+}
+.bg-dots2{
+  position:fixed;bottom:80px;left:20px;
+  width:180px;height:180px;z-index:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(139,92,246,0.2) 1px,transparent 1px);
+  background-size:14px 14px;
+  mask-image:radial-gradient(ellipse 70% 70% at 40% 60%,black 0%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 70% 70% at 40% 60%,black 0%,transparent 100%);
+}
+.wrap{position:relative;z-index:1;}
+
+/* NAV */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 60px;
+  border-bottom:1px solid var(--border);
+  background:rgba(5,7,15,0.7);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  position:sticky;top:0;z-index:100;
+}
+.nav-logo{display:flex;align-items:center;gap:12px;}
+.nav-icon{
+  width:40px;height:40px;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  border-radius:10px;display:grid;place-items:center;
+  font-family:'Bebas Neue',sans-serif;font-size:17px;color:#fff;
+  box-shadow:0 0 22px rgba(79,142,247,0.5),0 0 44px rgba(79,142,247,0.2);
+  flex-shrink:0;
+}
+.nav-sub{font-size:10px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;line-height:1.2;}
+.nav-name{font-size:15px;font-weight:700;color:var(--text);line-height:1.3;}
+.nav-badge{
+  font-family:'Space Mono',monospace;font-size:10px;
+  color:var(--blue);background:rgba(79,142,247,0.1);
+  border:1px solid rgba(79,142,247,0.25);
+  padding:5px 13px;border-radius:100px;letter-spacing:1px;
+}
+@media(max-width:540px){.nav-badge{display:none;}}
+
+/* HERO */
+.hero{padding:68px 60px 48px;max-width:920px;}
+.eyebrow{
+  font-family:'Space Mono',monospace;font-size:10px;
+  color:var(--blue);letter-spacing:4px;text-transform:uppercase;
+  margin-bottom:18px;display:flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:'';width:26px;height:1px;background:var(--blue);}
+.hero h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(50px,9vw,108px);
+  line-height:.92;letter-spacing:3px;margin-bottom:22px;
+}
+.gw{background:linear-gradient(135deg,#fff 40%,rgba(255,255,255,.45));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.gb{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-p{font-size:clamp(13px,1.8vw,16px);color:var(--muted);line-height:1.8;max-width:520px;}
+
+/* PLANNER */
+.planner{padding:0 60px 80px;display:flex;flex-direction:column;gap:44px;}
+.slabel{
+  font-family:'Space Mono',monospace;font-size:10px;
+  letter-spacing:3px;text-transform:uppercase;color:var(--muted);
+  margin-bottom:16px;display:flex;align-items:center;gap:8px;
+}
+.slabel::before{content:'';width:16px;height:1px;background:var(--muted2);}
+
+/* FORM */
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;}
+.fld{display:flex;flex-direction:column;gap:7px;}
+.flbl{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+select,.ni{
+  background:var(--surf2);border:1px solid var(--border2);
+  color:var(--text);padding:13px 15px;border-radius:10px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;
+  cursor:pointer;transition:border-color .2s,box-shadow .2s;outline:none;width:100%;
+}
+select{
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4 4.5-4' stroke='%237880a4' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 13px center;padding-right:36px;
+}
+select option{background:#151928;}
+select:hover,.ni:hover{border-color:rgba(79,142,247,.4);}
+select:focus,.ni:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(79,142,247,.15);}
+.ni::-webkit-inner-spin-button{opacity:0;}
+
+/* MODE CARDS */
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.mcard{
+  position:relative;background:var(--surf2);
+  border:2px solid var(--border);border-radius:18px;
+  padding:26px 22px 22px;
+  cursor:pointer;
+  transition:all .25s cubic-bezier(.25,.46,.45,.94);
+  overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+.mcbg{
+  position:absolute;inset:0;opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.mcard.easy   .mcbg{background:radial-gradient(ellipse 130% 110% at 0% 0%,rgba(16,212,142,.13),transparent 65%);}
+.mcard.medium .mcbg{background:radial-gradient(ellipse 130% 110% at 0% 0%,rgba(245,158,11,.13),transparent 65%);}
+.mcard.hard   .mcbg{background:radial-gradient(ellipse 130% 110% at 0% 0%,rgba(244,63,94,.13),transparent 65%);}
+/* hover */
+.mcard:hover{transform:translateY(-3px);}
+.mcard:hover .mcbg{opacity:.65;}
+.mcard.easy:hover  {border-color:rgba(16,212,142,.35);}
+.mcard.medium:hover{border-color:rgba(245,158,11,.35);}
+.mcard.hard:hover  {border-color:rgba(244,63,94,.35);}
+/* selected */
+.mcard.sel{transform:translateY(-5px);}
+.mcard.sel .mcbg{opacity:1;}
+.mcard.easy.sel  {border-color:rgba(16,212,142,.65);box-shadow:0 10px 42px rgba(16,212,142,.2),inset 0 0 0 1px rgba(16,212,142,.12);}
+.mcard.medium.sel{border-color:rgba(245,158,11,.65);box-shadow:0 10px 42px rgba(245,158,11,.2),inset 0 0 0 1px rgba(245,158,11,.12);}
+.mcard.hard.sel  {border-color:rgba(244,63,94,.65); box-shadow:0 10px 42px rgba(244,63,94,.2), inset 0 0 0 1px rgba(244,63,94,.12);}
+/* check ring */
+.mchk{
+  position:absolute;top:15px;right:15px;
+  width:22px;height:22px;border-radius:50%;
+  border:2px solid var(--border2);
+  display:grid;place-items:center;
+  transition:all .25s;
+  font-size:12px;color:#fff;font-weight:800;
+}
+.mcard.easy.sel   .mchk{background:var(--green);border-color:var(--green);box-shadow:0 0 12px rgba(16,212,142,.55);}
+.mcard.medium.sel .mchk{background:var(--amber);border-color:var(--amber);box-shadow:0 0 12px rgba(245,158,11,.55);}
+.mcard.hard.sel   .mchk{background:var(--red);  border-color:var(--red);  box-shadow:0 0 12px rgba(244,63,94,.55);}
+.mchki{opacity:0;transition:opacity .2s;}
+.mcard.sel .mchki{opacity:1;}
+/* card content */
+.mico{font-size:33px;display:block;margin-bottom:12px;line-height:1;}
+.mtitle{font-family:'Bebas Neue',sans-serif;font-size:25px;letter-spacing:2px;margin-bottom:7px;}
+.mcard.easy   .mtitle{color:var(--green);}
+.mcard.medium .mtitle{color:var(--amber);}
+.mcard.hard   .mtitle{color:var(--red);}
+.mdesc{font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:14px;}
+.mbadge{
+  display:inline-flex;align-items:center;
+  font-family:'Space Mono',monospace;font-size:10px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:4px 10px;border-radius:6px;
+}
+.mcard.easy   .mbadge{color:var(--green);background:rgba(16,212,142,.1); border:1px solid rgba(16,212,142,.2);}
+.mcard.medium .mbadge{color:var(--amber);background:rgba(245,158,11,.1); border:1px solid rgba(245,158,11,.2);}
+.mcard.hard   .mbadge{color:var(--red);  background:rgba(244,63,94,.1);  border:1px solid rgba(244,63,94,.2);}
+
+/* GENERATE BTN */
+.gbtn{
+  align-self:flex-start;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  color:#fff;border:none;
+  padding:16px 42px;border-radius:12px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;transition:all .3s;position:relative;overflow:hidden;
+  box-shadow:0 0 32px rgba(79,142,247,.35);
+  width:100%;max-width:300px;
+}
+.gbtn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.18),transparent);opacity:0;transition:opacity .2s;}
+.gbtn:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(79,142,247,.5);}
+.gbtn:hover::before{opacity:1;}
+.gbtn:active{transform:translateY(0);}
+
+/* RESULTS */
+#results{padding:0 60px 60px;display:none;}
+#results.show{display:block;}
+.rdiv{height:1px;background:var(--border);margin-bottom:38px;}
+.rhead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-bottom:26px;}
+.rh2{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,6vw,50px);letter-spacing:2px;color:#fff;}
+.pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{font-family:'Space Mono',monospace;font-size:10px;padding:5px 13px;border-radius:100px;background:var(--surf2);border:1px solid var(--border2);color:var(--muted);}
+.pill.hi{background:rgba(79,142,247,.1);border-color:rgba(79,142,247,.25);color:var(--blue);}
+/* summary */
+.sumbar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:30px;}
+.scard{background:var(--surf2);border:1px solid var(--border);border-radius:14px;padding:18px 14px;text-align:center;}
+.sval{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,5vw,44px);letter-spacing:2px;line-height:1;margin-bottom:4px;color:#fff;}
+.sval.g{color:var(--green);}.sval.a{color:var(--amber);}.sval.r{color:var(--red);}
+.skey{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+/* course grid */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:13px;margin-bottom:26px;}
+.ccard{
+  background:var(--surf2);border:1px solid var(--border);
+  border-radius:14px;padding:20px 22px;
+  position:relative;overflow:hidden;
+  transition:all .22s;
+  animation:fadeUp .4s ease both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.ccard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--blue),var(--purple));border-radius:2px 0 0 2px;}
+.ccard.mc::before{background:linear-gradient(180deg,#a78bfa,var(--blue));}
+.ccard.lc::before{background:linear-gradient(180deg,var(--green),#0ea5e9);}
+.ccard.ec::before{background:linear-gradient(180deg,var(--amber),#f97316);}
+.ccard:hover{border-color:rgba(79,142,247,.3);transform:translateY(-2px);box-shadow:0 6px 28px rgba(0,0,0,.35);}
+.ctop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;}
+.ccode{font-family:'Space Mono',monospace;font-size:11px;color:var(--blue);letter-spacing:2px;font-weight:700;}
+.ccr{font-family:'Space Mono',monospace;font-size:11px;background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.2);color:var(--blue);padding:3px 9px;border-radius:6px;}
+.cname{font-size:14px;font-weight:600;color:var(--text);line-height:1.45;margin-bottom:8px;}
+.ctype{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:6px;}
+.cdot{width:6px;height:6px;border-radius:50%;background:var(--muted);}
+.cdot.core{background:var(--blue);}.cdot.math{background:#a78bfa;}.cdot.lab{background:var(--green);}.cdot.elective{background:var(--amber);}
+/* warn */
+.warnbox{background:rgba(244,63,94,.07);border:1px solid rgba(244,63,94,.25);border-radius:12px;padding:17px 21px;display:flex;gap:11px;align-items:flex-start;margin-bottom:22px;}
+.wicon{font-size:17px;flex-shrink:0;margin-top:2px;}
+.wtitle{font-size:13px;font-weight:700;color:var(--red);margin-bottom:3px;}
+.wtext{font-size:12.5px;color:#fca5a5;line-height:1.65;}
+/* tips */
+.tbox{background:var(--surf2);border:1px solid var(--border);border-radius:16px;padding:26px 28px;}
+.th{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--text);margin-bottom:15px;}
+.tip{display:flex;align-items:flex-start;gap:11px;margin-bottom:10px;}
+.tip:last-child{margin-bottom:0;}
+.tn{font-family:'Space Mono',monospace;font-size:10px;color:var(--blue);background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.2);width:20px;height:20px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;margin-top:2px;}
+.tip span{font-size:13px;color:var(--muted);line-height:1.65;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:48px 60px 34px;margin-top:16px;}
+.ftop{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:40px;margin-bottom:38px;}
+.fbadge{display:flex;align-items:center;gap:11px;margin-bottom:14px;}
+.ficon{width:36px;height:36px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:9px;display:grid;place-items:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;box-shadow:0 0 16px rgba(79,142,247,.35);flex-shrink:0;}
+.funi{font-size:9px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
+.fname{font-size:14px;font-weight:700;color:var(--text);}
+.fdesc{font-size:12.5px;color:var(--muted);line-height:1.75;max-width:250px;}
+.fctitle{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted2);margin-bottom:14px;}
+.flinks{display:flex;flex-direction:column;gap:9px;}
+.flink{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:13px;font-weight:500;text-decoration:none;transition:color .2s,transform .2s;width:fit-content;}
+.flink:hover{color:var(--text);transform:translateX(3px);}
+.flink svg{width:14px;height:14px;flex-shrink:0;opacity:.65;}
+.flink:hover svg{opacity:1;}
+/* socials */
+.socs{display:flex;gap:9px;margin-top:16px;}
+.soc{width:36px;height:36px;border-radius:9px;background:var(--surf3);border:1px solid var(--border2);display:grid;place-items:center;text-decoration:none;transition:all .2s;color:var(--muted);}
+.soc:hover{background:rgba(79,142,247,.15);border-color:rgba(79,142,247,.35);color:var(--blue);transform:translateY(-2px);}
+.soc svg{width:16px;height:16px;}
+.fbot{padding-top:22px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;}
+.fcopy{font-size:12px;color:var(--muted2);}
+.fcopy a{color:var(--muted);text-decoration:none;}
+.fcopy a:hover{color:var(--blue);}
+.fmade{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted2);letter-spacing:1px;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav,.hero,.planner,#results,footer{padding-left:24px;padding-right:24px;}
+  .fgrid{grid-template-columns:1fr 1fr;}
+  .mgrid{grid-template-columns:1fr 1fr;}
+  .ftop{grid-template-columns:1fr;gap:28px;}
+  .sumbar{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:560px){
+  .fgrid{grid-template-columns:1fr;}
+  .mgrid{grid-template-columns:1fr;}
+  .hero{padding-top:44px;}
+  .gbtn{max-width:100%;}
+}
+/* SHAKE */
+@keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-8px);}40%{transform:translateX(8px);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}}
+.shake{animation:shake .4s ease;}
+</style>
+</head>
+<body>
+<div class="bg-aurora"></div>
+<div class="bg-grid"></div>
+<div class="bg-dots"></div>
+<div class="bg-dots2"></div>
+
+<div class="wrap">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-icon">NSU</div>
+    <div>
+      <div class="nav-sub">North South University</div>
+      <div class="nav-name">Subject Planner</div>
+    </div>
+  </div>
+  <div class="nav-badge">Spring 2025 · v2.0</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">Smart Academic Planning Tool</div>
+  <h1>
+    <span class="gw">PLAN YOUR</span><br>
+    <span class="gb">SEMESTER</span><br>
+    <span class="gw">YOUR WAY.</span>
+  </h1>
+  <p class="hero-p">Select your NSU department, current semester, and completed credits. Pick your load style — get your personalized course plan built on the official NSU curriculum instantly.</p>
+</section>
+
+<!-- PLANNER -->
+<section class="planner">
+
+  <!-- STEP 1 -->
+  <div>
+    <div class="slabel">Step 01 — Your Academic Info</div>
+    <div class="fgrid">
+      <div class="fld">
+        <div class="flbl">Department</div>
+        <select id="dept">
+          <option value="">— Select Department —</option>
+          <optgroup label="Engineering & Physical Sciences">
+            <option value="CSE">Computer Science & Engineering (CSE)</option>
+            <option value="EEE">Electrical & Electronic Engineering (EEE)</option>
+            <option value="ETE">Electronics & Telecom. Engineering (ETE)</option>
+            <option value="CE">Civil Engineering (CE)</option>
+          </optgroup>
+          <optgroup label="Business & Economics">
+            <option value="BBA">Business Administration (BBA)</option>
+            <option value="ECON">Economics (ECON)</option>
+          </optgroup>
+          <optgroup label="Humanities & Social Sciences">
+            <option value="ENG">English (ENG)</option>
+          </optgroup>
+          <optgroup label="Health & Life Sciences">
+            <option value="PHARM">Pharmacy (PHARM)</option>
+            <option value="BIO">Biochemistry & Biotechnology (BIOC)</option>
+            <option value="MNS">Microbiology & Natural Sciences (MNS)</option>
+          </optgroup>
+          <optgroup label="Architecture">
+            <option value="ARCH">Architecture (ARCH)</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="fld">
+        <div class="flbl">Current Semester</div>
+        <select id="sem">
+          <option value="">— Select Semester —</option>
+          <option value="1">1st Semester</option>
+          <option value="2">2nd Semester</option>
+          <option value="3">3rd Semester</option>
+          <option value="4">4th Semester</option>
+          <option value="5">5th Semester</option>
+          <option value="6">6th Semester</option>
+          <option value="7">7th Semester</option>
+          <option value="8">8th Semester</option>
+          <option value="9">9th Semester</option>
+          <option value="10">10th Semester</option>
+        </select>
+      </div>
+      <div class="fld">
+        <div class="flbl">Completed Credits</div>
+        <input id="cred" class="ni" type="number" placeholder="e.g. 60" min="0" max="170">
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div>
+    <div class="slabel">Step 02 — Choose Your Load Style</div>
+    <div class="mgrid">
+
+      <div class="mcard easy" id="mc-easy" onclick="pickMode(this,'easy')">
+        <div class="mcbg"></div>
+        <div class="mchk"><span class="mchki">✓</span></div>
+        <span class="mico">🌿</span>
+        <div class="mtitle">EASY PASS</div>
+        <p class="mdesc">Light load for GPA protection. 3 carefully chosen courses — breathe easy, stay focused, keep your CGPA strong.</p>
+        <div class="mbadge">9–10 Credits · 3 Courses</div>
+      </div>
+
+      <div class="mcard medium" id="mc-medium" onclick="pickMode(this,'medium')">
+        <div class="mcbg"></div>
+        <div class="mchk"><span class="mchki">✓</span></div>
+        <span class="mico">⚡</span>
+        <div class="mtitle">HARD GRIND</div>
+        <p class="mdesc">Standard NSU pace. 4–5 courses — stay on track with your study plan without risking burnout.</p>
+        <div class="mbadge">12–15 Credits · 4–5 Courses</div>
+      </div>
+
+      <div class="mcard hard" id="mc-hard" onclick="pickMode(this,'hard')">
+        <div class="mcbg"></div>
+        <div class="mchk"><span class="mchki">✓</span></div>
+        <span class="mico">🔥</span>
+        <div class="mtitle">SUPER HARD</div>
+        <p class="mdesc">Full overload mode. 6 courses — accelerate graduation. Requires advisor approval + CGPA ≥ 3.50.</p>
+        <div class="mbadge">18–21 Credits · 6 Courses</div>
+      </div>
+
+    </div>
+  </div>
+
+  <button class="gbtn" onclick="generate()">⚙&nbsp; Generate My Semester Plan</button>
+
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="rdiv"></div>
+  <div class="rhead">
+    <div class="rh2" id="r-title">YOUR PLAN</div>
+    <div class="pills">
+      <div class="pill hi" id="r-dp">CSE · Sem 1</div>
+      <div class="pill" id="r-mp">Easy Pass</div>
+    </div>
+  </div>
+  <div class="sumbar">
+    <div class="scard"><div class="sval" id="sc">0</div><div class="skey">Courses</div></div>
+    <div class="scard"><div class="sval" id="scr">0</div><div class="skey">Credits</div></div>
+    <div class="scard"><div class="sval" id="sm">—</div><div class="skey">Load Mode</div></div>
+    <div class="scard"><div class="sval" id="sl">—</div><div class="skey">Credits Left</div></div>
+  </div>
+  <div class="cgrid" id="cgrid"></div>
+  <div id="ww"></div>
+  <div class="tbox" id="tbox"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ftop">
+
+    <div>
+      <div class="fbadge">
+        <div class="ficon">NSU</div>
+        <div>
+          <div class="funi">North South University</div>
+          <div class="fname">Subject Planner</div>
+        </div>
+      </div>
+      <p class="fdesc">An unofficial academic planning tool for NSU students. Select your department, semester, and workload preference to get a personalized course plan.</p>
+      <div class="socs">
+        <a href="https://www.facebook.com/NorthSouthUniversity" target="_blank" rel="noopener" class="soc" title="NSU on Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073C24 5.404 18.627 0 12 0S0 5.404 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.024 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@NorthSouthUniversityBD" target="_blank" rel="noopener" class="soc" title="NSU on YouTube">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/school/north-south-university" target="_blank" rel="noopener" class="soc" title="NSU on LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/northsouthuniversityofficial" target="_blank" rel="noopener" class="soc" title="NSU on Instagram">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <div class="fctitle">NSU Official</div>
+      <div class="flinks">
+        <a href="https://www.northsouth.edu" target="_blank" rel="noopener" class="flink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          NSU Official Website
+        </a>
+        <a href="https://usis.northsouth.edu" target="_blank" rel="noopener" class="flink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+          USIS Student Portal
+        </a>
+        <a href="https://registrar.northsouth.edu" target="_blank" rel="noopener" class="flink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Office of the Registrar
+        </a>
+        <a href="https://library.northsouth.edu" target="_blank" rel="noopener" class="flink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          NSU Library
+        </a>
+        <a href="https://www.northsouth.edu/about/contact.html" target="_blank" rel="noopener" class="flink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 6 6l.86-.86a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Contact NSU
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <div class="fctitle">Student Resources</div>
+      <div class="flinks">
+        <a href="https://www.northsouth.edu/academics/courses.html" target="_blank" rel="noopener" class="flink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          Course Catalog (Official)
+        </a>
+        <a href="https://www.northsouth.edu/academics/academic-calendar.html" target="_blank" rel="noopener" class="flink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Academic Calendar
+        </a>
+        <a href="https://www.northsouth.edu/admissions/financial-aid.html" target="_blank" rel="noopener" class="flink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Scholarships & Financial Aid
+        </a>
+        <a href="https://www.facebook.com/NorthSouthUniversity" target="_blank" rel="noopener" class="flink">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073C24 5.404 18.627 0 12 0S0 5.404 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.024 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+          NSU Facebook Page
+        </a>
+        <a href="https://www.northsouth.edu/student-life/clubs.html" target="_blank" rel="noopener" class="flink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Student Clubs & Orgs
+        </a>
+      </div>
+    </div>
+
+  </div>
+  <div class="fbot">
+    <div class="fcopy">© 2025 NSU Subject Planner · Unofficial student tool · Not affiliated with <a href="https://www.northsouth.edu" target="_blank" rel="noopener">northsouth.edu</a></div>
+    <div class="fmade">Built for NSU Students 🎓</div>
+  </div>
+</footer>
+
+</div>
+
+<script>
+// =====================================================
+// REAL NSU COURSES — based on official NSU curriculum
+// =====================================================
+const DB = {
+  CSE:{total:136,s:{
+    1:[
+      {code:'ENG 105',name:'English for Academic Purposes I',cr:3,type:'core'},
+      {code:'CSE 115',name:'Introduction to Computer Science',cr:3,type:'core'},
+      {code:'MAT 110',name:'Differential Calculus & Co-ordinate Geometry',cr:3,type:'math'},
+      {code:'PHY 107',name:'Fundamentals of Physics I',cr:3,type:'core'},
+      {code:'PHY 108L',name:'Physics I Laboratory',cr:1,type:'lab'},
+    ],
+    2:[
+      {code:'ENG 106',name:'English for Academic Purposes II',cr:3,type:'core'},
+      {code:'CSE 173',name:'Fundamentals of Programming',cr:3,type:'core'},
+      {code:'MAT 120',name:'Integral Calculus & Linear Algebra',cr:3,type:'math'},
+      {code:'PHY 111',name:'Fundamentals of Physics II',cr:3,type:'core'},
+      {code:'CSE 115L',name:'Intro to CS Laboratory',cr:1,type:'lab'},
+    ],
+    3:[
+      {code:'CSE 225',name:'Data Structures',cr:3,type:'core'},
+      {code:'CSE 215',name:'Object Oriented Programming Using Java',cr:3,type:'core'},
+      {code:'MAT 210',name:'Introduction to Probability & Statistics',cr:3,type:'math'},
+      {code:'CSE 173L',name:'Programming Fundamentals Lab',cr:1,type:'lab'},
+      {code:'ECO 101',name:'Principles of Microeconomics',cr:3,type:'core'},
+    ],
+    4:[
+      {code:'CSE 311',name:'Digital Logic Design',cr:3,type:'core'},
+      {code:'CSE 251',name:'Electronics for Computer Engineers',cr:3,type:'core'},
+      {code:'CSE 225L',name:'Data Structures Lab',cr:1,type:'lab'},
+      {code:'MAT 230',name:'Ordinary Differential Equations',cr:3,type:'math'},
+      {code:'MGT 210',name:'Principles of Management',cr:3,type:'core'},
+      {code:'CSE 215L',name:'OOP Lab',cr:1,type:'lab'},
+    ],
+    5:[
+      {code:'CSE 321',name:'Operating Systems',cr:3,type:'core'},
+      {code:'CSE 323',name:'Computer Networks',cr:3,type:'core'},
+      {code:'CSE 331',name:'Design & Analysis of Algorithms',cr:3,type:'core'},
+      {code:'CSE 311L',name:'Digital Logic Design Lab',cr:1,type:'lab'},
+      {code:'MAT 320',name:'Numerical Methods',cr:3,type:'math'},
+      {code:'CSE 321L',name:'Operating Systems Lab',cr:1,type:'lab'},
+    ],
+    6:[
+      {code:'CSE 327',name:'Software Engineering',cr:3,type:'core'},
+      {code:'CSE 325',name:'Computer Organization & Architecture',cr:3,type:'core'},
+      {code:'CSE 411',name:'Artificial Intelligence',cr:3,type:'core'},
+      {code:'CSE 323L',name:'Computer Networks Lab',cr:1,type:'lab'},
+      {code:'MGT 320',name:'Business Communication',cr:3,type:'core'},
+      {code:'CSE 327L',name:'Software Engineering Lab',cr:1,type:'lab'},
+    ],
+    7:[
+      {code:'CSE 431',name:'Compiler Design',cr:3,type:'core'},
+      {code:'CSE 427',name:'Software Development Project',cr:3,type:'core'},
+      {code:'CSE 465',name:'Machine Learning',cr:3,type:'elective'},
+      {code:'CSE 445',name:'Distributed Systems',cr:3,type:'elective'},
+      {code:'CSE 499A',name:'Senior Design Project I',cr:2,type:'core'},
+    ],
+    8:[
+      {code:'CSE 499B',name:'Senior Design Project II',cr:2,type:'core'},
+      {code:'CSE 489',name:'Computer Graphics & Image Processing',cr:3,type:'elective'},
+      {code:'CSE 477',name:'Embedded Systems Design',cr:3,type:'elective'},
+      {code:'CSE 479',name:'Cloud Computing',cr:3,type:'elective'},
+      {code:'CSE 400',name:'Internship',cr:3,type:'core'},
+    ],
+  }},
+  EEE:{total:140,s:{
+    1:[
+      {code:'ENG 105',name:'English for Academic Purposes I',cr:3,type:'core'},
+      {code:'PHY 107',name:'Fundamentals of Physics I',cr:3,type:'core'},
+      {code:'PHY 108L',name:'Physics I Laboratory',cr:1,type:'lab'},
+      {code:'MAT 110',name:'Differential Calculus & Co-ordinate Geometry',cr:3,type:'math'},
+      {code:'EEE 101',name:'Basic Electrical Engineering',cr:3,type:'core'},
+    ],
+    2:[
+      {code:'ENG 106',name:'English for Academic Purposes II',cr:3,type:'core'},
+      {code:'PHY 111',name:'Fundamentals of Physics II',cr:3,type:'core'},
+      {code:'PHY 112L',name:'Physics II Laboratory',cr:1,type:'lab'},
+      {code:'MAT 120',name:'Integral Calculus & Linear Algebra',cr:3,type:'math'},
+      {code:'EEE 203',name:'Electronics I',cr:3,type:'core'},
+    ],
+    3:[
+      {code:'EEE 205',name:'Electronics II',cr:3,type:'core'},
+      {code:'EEE 207',name:'Signals and Systems',cr:3,type:'core'},
+      {code:'MAT 210',name:'Introduction to Probability & Statistics',cr:3,type:'math'},
+      {code:'EEE 203L',name:'Electronics I Lab',cr:1,type:'lab'},
+      {code:'EEE 213',name:'Circuit Theory and Applications',cr:3,type:'core'},
+    ],
+    4:[
+      {code:'EEE 301',name:'Electromagnetic Fields & Waves',cr:3,type:'core'},
+      {code:'EEE 303',name:'Digital Electronics',cr:3,type:'core'},
+      {code:'EEE 307',name:'Digital Signal Processing',cr:3,type:'core'},
+      {code:'EEE 303L',name:'Digital Electronics Lab',cr:1,type:'lab'},
+      {code:'MAT 230',name:'Ordinary Differential Equations',cr:3,type:'math'},
+      {code:'EEE 207L',name:'Signals & Systems Lab',cr:1,type:'lab'},
+    ],
+    5:[
+      {code:'EEE 401',name:'Power Systems I',cr:3,type:'core'},
+      {code:'EEE 403',name:'Communication Engineering I',cr:3,type:'core'},
+      {code:'EEE 405',name:'Control Systems',cr:3,type:'core'},
+      {code:'EEE 403L',name:'Communication Engineering Lab',cr:1,type:'lab'},
+      {code:'EEE 407',name:'Microprocessors & Microcontrollers',cr:3,type:'core'},
+      {code:'EEE 405L',name:'Control Systems Lab',cr:1,type:'lab'},
+    ],
+    6:[
+      {code:'EEE 411',name:'Power Systems II',cr:3,type:'core'},
+      {code:'EEE 413',name:'Communication Engineering II',cr:3,type:'core'},
+      {code:'EEE 417',name:'Electrical Machines',cr:3,type:'core'},
+      {code:'EEE 415',name:'VLSI Design',cr:3,type:'elective'},
+      {code:'EEE 415L',name:'VLSI Design Lab',cr:1,type:'lab'},
+      {code:'MGT 210',name:'Principles of Management',cr:3,type:'core'},
+    ],
+    7:[
+      {code:'EEE 499A',name:'Senior Design Project I',cr:2,type:'core'},
+      {code:'EEE 481',name:'Renewable Energy Systems',cr:3,type:'elective'},
+      {code:'EEE 483',name:'Antenna & Wave Propagation',cr:3,type:'elective'},
+      {code:'EEE 485',name:'Optical Fiber Communication',cr:3,type:'elective'},
+      {code:'EEE 400',name:'Internship / Industrial Training',cr:3,type:'core'},
+    ],
+    8:[
+      {code:'EEE 499B',name:'Senior Design Project II',cr:2,type:'core'},
+      {code:'EEE 487',name:'Advanced Power Electronics',cr:3,type:'elective'},
+      {code:'EEE 489',name:'Wireless Communications',cr:3,type:'elective'},
+      {code:'MGT 320',name:'Business Communication',cr:3,type:'core'},
+      {code:'EEE 491L',name:'Final Year Lab',cr:1,type:'lab'},
+    ],
+  }},
+  ETE:{total:136,s:{
+    1:[
+      {code:'ENG 105',name:'English for Academic Purposes I',cr:3,type:'core'},
+      {code:'PHY 107',name:'Fundamentals of Physics I',cr:3,type:'core'},
+      {code:'MAT 110',name:'Differential Calculus & Co-ordinate Geometry',cr:3,type:'math'},
+      {code:'ETE 101',name:'Introduction to Electrical Circuits',cr:3,type:'core'},
+      {code:'PHY 108L',name:'Physics Lab I',cr:1,type:'lab'},
+    ],
+    2:[
+      {code:'ENG 106',name:'English for Academic Purposes II',cr:3,type:'core'},
+      {code:'PHY 111',name:'Fundamentals of Physics II',cr:3,type:'core'},
+      {code:'MAT 120',name:'Integral Calculus & Linear Algebra',cr:3,type:'math'},
+      {code:'ETE 203',name:'Electronic Devices & Circuits I',cr:3,type:'core'},
+      {code:'ETE 101L',name:'Electrical Circuits Lab',cr:1,type:'lab'},
+    ],
+    3:[
+      {code:'ETE 205',name:'Electronic Devices & Circuits II',cr:3,type:'core'},
+      {code:'ETE 207',name:'Signals and Linear Systems',cr:3,type:'core'},
+      {code:'MAT 210',name:'Probability & Statistics',cr:3,type:'math'},
+      {code:'ETE 203L',name:'Electronic Circuits Lab',cr:1,type:'lab'},
+      {code:'ECO 101',name:'Principles of Economics',cr:3,type:'core'},
+    ],
+    4:[
+      {code:'ETE 301',name:'Electromagnetic Theory',cr:3,type:'core'},
+      {code:'ETE 303',name:'Digital Electronics & Logic Design',cr:3,type:'core'},
+      {code:'ETE 305',name:'Digital Signal Processing',cr:3,type:'core'},
+      {code:'ETE 303L',name:'Digital Electronics Lab',cr:1,type:'lab'},
+      {code:'MAT 315',name:'Complex Variables & Transform',cr:3,type:'math'},
+    ],
+    5:[
+      {code:'ETE 401',name:'Microwave Engineering',cr:3,type:'core'},
+      {code:'ETE 403',name:'Communication Engineering I',cr:3,type:'core'},
+      {code:'ETE 405',name:'Data Communication Networks',cr:3,type:'core'},
+      {code:'ETE 407',name:'Microprocessor & Interface',cr:3,type:'core'},
+      {code:'ETE 403L',name:'Communication Engineering Lab',cr:1,type:'lab'},
+    ],
+    6:[
+      {code:'ETE 411',name:'Wireless Communication',cr:3,type:'core'},
+      {code:'ETE 413',name:'Optical Fiber Communication',cr:3,type:'core'},
+      {code:'ETE 415',name:'Antenna & Propagation',cr:3,type:'core'},
+      {code:'ETE 417',name:'Telecommunication Networks',cr:3,type:'core'},
+      {code:'MGT 210',name:'Principles of Management',cr:3,type:'core'},
+    ],
+    7:[
+      {code:'ETE 499A',name:'Senior Design Project I',cr:2,type:'core'},
+      {code:'ETE 421',name:'Mobile Communication',cr:3,type:'elective'},
+      {code:'ETE 423',name:'Satellite Communication',cr:3,type:'elective'},
+      {code:'ETE 400',name:'Internship',cr:3,type:'core'},
+    ],
+    8:[
+      {code:'ETE 499B',name:'Senior Design Project II',cr:2,type:'core'},
+      {code:'ETE 481',name:'5G & Beyond Networks',cr:3,type:'elective'},
+      {code:'ETE 483',name:'Photonics & Laser',cr:3,type:'elective'},
+      {code:'MGT 320',name:'Business Communication',cr:3,type:'core'},
+    ],
+  }},
+  CE:{total:140,s:{
+    1:[
+      {code:'ENG 105',name:'English for Academic Purposes I',cr:3,type:'core'},
+      {code:'PHY 107',name:'Fundamentals of Physics I',cr:3,type:'core'},
+      {code:'MAT 110',name:'Differential Calculus & Co-ordinate Geometry',cr:3,type:'math'},
+      {code:'CE 101',name:'Introduction to Civil Engineering',cr:3,type:'core'},
+      {code:'PHY 108L',name:'Physics Lab I',cr:1,type:'lab'},
+    ],
+    2:[
+      {code:'ENG 106',name:'English for Academic Purposes II',cr:3,type:'core'},
+      {code:'CE 201',name:'Engineering Drawing & AutoCAD',cr:3,type:'lab'},
+      {code:'MAT 120',name:'Integral Calculus & Linear Algebra',cr:3,type:'math'},
+      {code:'CE 203',name:'Engineering Mechanics: Statics',cr:3,type:'core'},
+      {code:'CHM 101',name:'Engineering Chemistry',cr:3,type:'core'},
+    ],
+    3:[
+      {code:'CE 301',name:'Engineering Mechanics: Dynamics',cr:3,type:'core'},
+      {code:'CE 303',name:'Mechanics of Materials',cr:3,type:'core'},
+      {code:'CE 305',name:'Fluid Mechanics',cr:3,type:'core'},
+      {code:'MAT 210',name:'Probability & Statistics for Engineers',cr:3,type:'math'},
+      {code:'CE 305L',name:'Fluid Mechanics Lab',cr:1,type:'lab'},
+    ],
+    4:[
+      {code:'CE 401',name:'Structural Analysis I',cr:3,type:'core'},
+      {code:'CE 403',name:'Hydraulics & Hydraulic Machinery',cr:3,type:'core'},
+      {code:'CE 405',name:'Soil Mechanics',cr:3,type:'core'},
+      {code:'CE 407',name:'Engineering Geology',cr:3,type:'core'},
+      {code:'CE 405L',name:'Soil Mechanics Lab',cr:1,type:'lab'},
+    ],
+    5:[
+      {code:'CE 501',name:'Structural Analysis II',cr:3,type:'core'},
+      {code:'CE 503',name:'Reinforced Concrete Design',cr:3,type:'core'},
+      {code:'CE 505',name:'Transportation Engineering',cr:3,type:'core'},
+      {code:'CE 507',name:'Environmental Engineering',cr:3,type:'core'},
+      {code:'CE 509',name:'Foundation Engineering',cr:3,type:'core'},
+    ],
+  }},
+  BBA:{total:130,s:{
+    1:[
+      {code:'ENG 105',name:'English for Academic Purposes I',cr:3,type:'core'},
+      {code:'MAT 100',name:'Business Mathematics',cr:3,type:'math'},
+      {code:'ECO 101',name:'Principles of Microeconomics',cr:3,type:'core'},
+      {code:'MGT 101',name:'Introduction to Business',cr:3,type:'core'},
+      {code:'SOC 101',name:'Introduction to Sociology',cr:3,type:'core'},
+    ],
+    2:[
+      {code:'ENG 106',name:'English for Academic Purposes II',cr:3,type:'core'},
+      {code:'ECO 102',name:'Principles of Macroeconomics',cr:3,type:'core'},
+      {code:'ACC 201',name:'Financial Accounting I',cr:3,type:'core'},
+      {code:'MIS 201',name:'Introduction to Computers & MIS',cr:3,type:'core'},
+      {code:'BUS 230',name:'Business Statistics',cr:3,type:'math'},
+    ],
+    3:[
+      {code:'ACC 202',name:'Financial Accounting II',cr:3,type:'core'},
+      {code:'MGT 212',name:'Organizational Behavior',cr:3,type:'core'},
+      {code:'MKT 202',name:'Principles of Marketing',cr:3,type:'core'},
+      {code:'FIN 301',name:'Introduction to Finance',cr:3,type:'core'},
+      {code:'ECO 201',name:'Intermediate Microeconomics',cr:3,type:'core'},
+    ],
+    4:[
+      {code:'MGT 210',name:'Principles of Management',cr:3,type:'core'},
+      {code:'MKT 303',name:'Consumer Behavior',cr:3,type:'core'},
+      {code:'ACC 303',name:'Cost Accounting',cr:3,type:'core'},
+      {code:'FIN 303',name:'Financial Management',cr:3,type:'core'},
+      {code:'MGT 321',name:'Human Resource Management',cr:3,type:'core'},
+    ],
+    5:[
+      {code:'MGT 422',name:'Strategic Management',cr:3,type:'core'},
+      {code:'MKT 401',name:'Marketing Research',cr:3,type:'core'},
+      {code:'FIN 401',name:'Investment Analysis',cr:3,type:'core'},
+      {code:'MIS 301',name:'Management Information Systems',cr:3,type:'core'},
+      {code:'BUS 401',name:'Business Research Methodology',cr:3,type:'core'},
+    ],
+    6:[
+      {code:'MGT 430',name:'Entrepreneurship & Innovation',cr:3,type:'core'},
+      {code:'MKT 420',name:'International Marketing',cr:3,type:'elective'},
+      {code:'FIN 410',name:'Portfolio & Risk Management',cr:3,type:'elective'},
+      {code:'BUS 498',name:'Business Policy & Ethics',cr:3,type:'core'},
+      {code:'MGT 460',name:'Project Management',cr:3,type:'elective'},
+    ],
+    7:[
+      {code:'BBA 499A',name:'Internship I',cr:3,type:'core'},
+      {code:'MGT 480',name:'Leadership & Organizational Change',cr:3,type:'core'},
+      {code:'MKT 450',name:'Digital Marketing',cr:3,type:'elective'},
+      {code:'FIN 450',name:'Corporate Finance',cr:3,type:'elective'},
+    ],
+    8:[
+      {code:'BBA 499B',name:'Thesis / Internship Report',cr:3,type:'core'},
+      {code:'BUS 491',name:'Capstone Business Seminar',cr:3,type:'core'},
+      {code:'MGT 490',name:'Independent Study',cr:3,type:'elective'},
+      {code:'MKT 490',name:'Marketing Strategy',cr:3,type:'elective'},
+    ],
+  }},
+  ECON:{total:124,s:{
+    1:[
+      {code:'ENG 105',name:'English for Academic Purposes I',cr:3,type:'core'},
+      {code:'ECO 101',name:'Principles of Microeconomics',cr:3,type:'core'},
+      {code:'MAT 100',name:'Business & Economic Mathematics',cr:3,type:'math'},
+      {code:'SOC 101',name:'Introduction to Sociology',cr:3,type:'core'},
+      {code:'HIS 101',name:'World Economic History',cr:3,type:'core'},
+    ],
+    2:[
+      {code:'ECO 102',name:'Principles of Macroeconomics',cr:3,type:'core'},
+      {code:'ENG 106',name:'English for Academic Purposes II',cr:3,type:'core'},
+      {code:'STA 201',name:'Introduction to Statistics',cr:3,type:'math'},
+      {code:'ECO 201',name:'Intermediate Microeconomics',cr:3,type:'core'},
+      {code:'POL 101',name:'Introduction to Political Science',cr:3,type:'core'},
+    ],
+    3:[
+      {code:'ECO 202',name:'Intermediate Macroeconomics',cr:3,type:'core'},
+      {code:'ECO 301',name:'Econometrics I',cr:3,type:'core'},
+      {code:'ECO 303',name:'Development Economics',cr:3,type:'core'},
+      {code:'ECO 305',name:'Public Finance',cr:3,type:'core'},
+      {code:'ECO 307',name:'Bangladesh Economy',cr:3,type:'core'},
+    ],
+    4:[
+      {code:'ECO 401',name:'Econometrics II',cr:3,type:'core'},
+      {code:'ECO 403',name:'International Economics',cr:3,type:'core'},
+      {code:'ECO 405',name:'Labour Economics',cr:3,type:'core'},
+      {code:'ECO 407',name:'Environmental Economics',cr:3,type:'elective'},
+      {code:'ECO 409',name:'Health Economics',cr:3,type:'elective'},
+    ],
+  }},
+  ENG:{total:124,s:{
+    1:[
+      {code:'ENG 101',name:'Introduction to Literature',cr:3,type:'core'},
+      {code:'ENG 103',name:'Composition & Communication Skills',cr:3,type:'core'},
+      {code:'ENG 105',name:'English for Academic Purposes I',cr:3,type:'core'},
+      {code:'HIS 101',name:'World History & Civilization',cr:3,type:'core'},
+      {code:'SOC 101',name:'Introduction to Sociology',cr:3,type:'core'},
+    ],
+    2:[
+      {code:'ENG 102',name:'Advanced Writing Skills',cr:3,type:'core'},
+      {code:'ENG 110',name:'Poetry, Prose & Drama',cr:3,type:'core'},
+      {code:'ENG 112',name:'Rhetoric & Discourse',cr:3,type:'core'},
+      {code:'PHI 201',name:'Introduction to Philosophy',cr:3,type:'core'},
+      {code:'ENG 114',name:'Creative Writing',cr:3,type:'elective'},
+    ],
+    3:[
+      {code:'ENG 201',name:'British Literature I',cr:3,type:'core'},
+      {code:'ENG 203',name:'American Literature I',cr:3,type:'core'},
+      {code:'LIN 201',name:'Introduction to Linguistics',cr:3,type:'core'},
+      {code:'ENG 205',name:'World Literature in English',cr:3,type:'core'},
+      {code:'ENG 207',name:'Media & Cultural Studies',cr:3,type:'core'},
+    ],
+    4:[
+      {code:'ENG 301',name:'British Literature II',cr:3,type:'core'},
+      {code:'ENG 303',name:'Postcolonial & South Asian Literature',cr:3,type:'core'},
+      {code:'LIN 301',name:'Phonetics & Phonology',cr:3,type:'core'},
+      {code:'ENG 305',name:'Literary Theory & Criticism',cr:3,type:'core'},
+      {code:'ENG 307',name:'TESOL Methodology',cr:3,type:'elective'},
+    ],
+    5:[
+      {code:'ENG 401',name:'Contemporary Literature',cr:3,type:'core'},
+      {code:'ENG 403',name:'Gender & Literature',cr:3,type:'elective'},
+      {code:'LIN 401',name:'Sociolinguistics',cr:3,type:'core'},
+      {code:'ENG 405',name:'Research Paper Writing',cr:3,type:'core'},
+      {code:'ENG 407',name:'Bangla Literature in Translation',cr:3,type:'elective'},
+    ],
+  }},
+  PHARM:{total:160,s:{
+    1:[
+      {code:'PHR 101',name:'Introduction to Pharmacy',cr:3,type:'core'},
+      {code:'CHM 101',name:'General & Inorganic Chemistry',cr:3,type:'core'},
+      {code:'CHM 102L',name:'General Chemistry Laboratory',cr:1,type:'lab'},
+      {code:'BIO 110',name:'Principles of Biology',cr:3,type:'core'},
+      {code:'ENG 105',name:'English for Academic Purposes I',cr:3,type:'core'},
+      {code:'MAT 100',name:'Pharmaceutical Mathematics',cr:3,type:'math'},
+    ],
+    2:[
+      {code:'PHR 201',name:'Pharmaceutical Chemistry I',cr:3,type:'core'},
+      {code:'PHR 203',name:'Pharmaceutics I: Introduction to Dosage Forms',cr:3,type:'core'},
+      {code:'CHM 203',name:'Organic Chemistry I',cr:3,type:'core'},
+      {code:'CHM 204L',name:'Organic Chemistry Laboratory',cr:1,type:'lab'},
+      {code:'BIO 203',name:'Human Anatomy & Physiology I',cr:3,type:'core'},
+    ],
+    3:[
+      {code:'PHR 301',name:'Pharmaceutical Chemistry II',cr:3,type:'core'},
+      {code:'PHR 303',name:'Pharmacognosy I',cr:3,type:'core'},
+      {code:'PHR 305',name:'Pharmaceutics II: Solid Dosage Forms',cr:3,type:'core'},
+      {code:'MIC 201',name:'Microbiology for Pharmacy',cr:3,type:'core'},
+      {code:'MIC 202L',name:'Microbiology Laboratory',cr:1,type:'lab'},
+    ],
+    4:[
+      {code:'PHR 401',name:'Pharmacology I: Autonomic Pharmacology',cr:3,type:'core'},
+      {code:'PHR 403',name:'Pharmacognosy II',cr:3,type:'core'},
+      {code:'PHR 405',name:'Biopharmaceutics & Pharmacokinetics',cr:3,type:'core'},
+      {code:'PHR 407',name:'Pharmaceutical Analysis I',cr:3,type:'core'},
+      {code:'PHR 408L',name:'Pharmaceutical Analysis Lab',cr:1,type:'lab'},
+    ],
+    5:[
+      {code:'PHR 501',name:'Pharmacology II: Chemotherapy',cr:3,type:'core'},
+      {code:'PHR 503',name:'Clinical Pharmacy I',cr:3,type:'core'},
+      {code:'PHR 505',name:'Pharmaceutical Technology',cr:3,type:'core'},
+      {code:'PHR 507',name:'Drug Design & Development',cr:3,type:'core'},
+      {code:'PHR 509',name:'Toxicology',cr:3,type:'core'},
+    ],
+    6:[
+      {code:'PHR 601',name:'Clinical Pharmacy II',cr:3,type:'core'},
+      {code:'PHR 603',name:'Hospital & Community Pharmacy',cr:3,type:'core'},
+      {code:'PHR 605',name:'Pharmaceutical Marketing & Management',cr:3,type:'elective'},
+      {code:'PHR 607',name:'Advanced Pharmacokinetics',cr:3,type:'core'},
+      {code:'PHR 609',name:'Research Methodology in Pharmacy',cr:3,type:'core'},
+    ],
+    7:[
+      {code:'PHR 701',name:'Industrial Pharmacy Training',cr:6,type:'core'},
+      {code:'PHR 703',name:'Regulatory Affairs & Drug Policy',cr:3,type:'elective'},
+      {code:'PHR 705',name:'Pharmacoeconomics',cr:3,type:'elective'},
+    ],
+    8:[
+      {code:'PHR 801',name:'Thesis & Research Project',cr:6,type:'core'},
+      {code:'PHR 803',name:'Advanced Drug Delivery Systems',cr:3,type:'elective'},
+      {code:'PHR 805',name:'Capstone Seminar',cr:3,type:'core'},
+    ],
+  }},
+  BIO:{total:130,s:{
+    1:[
+      {code:'ENG 105',name:'English for Academic Purposes I',cr:3,type:'core'},
+      {code:'BIO 101',name:'Principles of Biology',cr:3,type:'core'},
+      {code:'CHM 101',name:'General & Inorganic Chemistry',cr:3,type:'core'},
+      {code:'CHM 102L',name:'Chemistry Laboratory I',cr:1,type:'lab'},
+      {code:'MAT 100',name:'Mathematics for Biosciences',cr:3,type:'math'},
+    ],
+    2:[
+      {code:'BIO 201',name:'Cell Biology',cr:3,type:'core'},
+      {code:'CHM 203',name:'Organic Chemistry I',cr:3,type:'core'},
+      {code:'BIO 205',name:'Genetics',cr:3,type:'core'},
+      {code:'BIO 203L',name:'Biology Laboratory I',cr:1,type:'lab'},
+      {code:'STA 201',name:'Biostatistics',cr:3,type:'math'},
+    ],
+    3:[
+      {code:'BIO 301',name:'Biochemistry I',cr:3,type:'core'},
+      {code:'BIO 303',name:'Microbiology',cr:3,type:'core'},
+      {code:'BIO 305',name:'Molecular Biology',cr:3,type:'core'},
+      {code:'BIO 303L',name:'Microbiology Lab',cr:1,type:'lab'},
+      {code:'BIO 307',name:'Developmental Biology',cr:3,type:'core'},
+    ],
+    4:[
+      {code:'BIO 401',name:'Biochemistry II',cr:3,type:'core'},
+      {code:'BIO 403',name:'Biotechnology & Genetic Engineering',cr:3,type:'core'},
+      {code:'BIO 405',name:'Immunology',cr:3,type:'core'},
+      {code:'BIO 407',name:'Enzymology',cr:3,type:'core'},
+      {code:'BIO 403L',name:'Biotechnology Lab',cr:1,type:'lab'},
+    ],
+    5:[
+      {code:'BIO 501',name:'Bioinformatics',cr:3,type:'core'},
+      {code:'BIO 503',name:'Genomics & Proteomics',cr:3,type:'core'},
+      {code:'BIO 505',name:'Toxicology & Environmental Biology',cr:3,type:'core'},
+      {code:'BIO 507',name:'Bioprocess Engineering',cr:3,type:'elective'},
+      {code:'BIO 509',name:'Research Methods in Biosciences',cr:3,type:'core'},
+    ],
+  }},
+  MNS:{total:128,s:{
+    1:[
+      {code:'ENG 105',name:'English for Academic Purposes I',cr:3,type:'core'},
+      {code:'MNS 101',name:'Introduction to Microbiology',cr:3,type:'core'},
+      {code:'CHM 101',name:'General Chemistry',cr:3,type:'core'},
+      {code:'CHM 102L',name:'Chemistry Lab I',cr:1,type:'lab'},
+      {code:'MAT 100',name:'Basic Mathematics',cr:3,type:'math'},
+    ],
+    2:[
+      {code:'MNS 201',name:'Bacteriology',cr:3,type:'core'},
+      {code:'MNS 203',name:'Mycology & Parasitology',cr:3,type:'core'},
+      {code:'CHM 203',name:'Organic Chemistry',cr:3,type:'core'},
+      {code:'MNS 201L',name:'Microbiology Lab I',cr:1,type:'lab'},
+      {code:'STA 201',name:'Biostatistics',cr:3,type:'math'},
+    ],
+    3:[
+      {code:'MNS 301',name:'Virology',cr:3,type:'core'},
+      {code:'MNS 303',name:'Immunology',cr:3,type:'core'},
+      {code:'MNS 305',name:'Medical Microbiology',cr:3,type:'core'},
+      {code:'MNS 303L',name:'Virology Lab',cr:1,type:'lab'},
+      {code:'BIO 301',name:'Biochemistry',cr:3,type:'core'},
+    ],
+  }},
+  ARCH:{total:186,s:{
+    1:[
+      {code:'ARC 101',name:'Architectural Design Studio I',cr:6,type:'core'},
+      {code:'ARC 103',name:'Visual Arts I: Drawing & Representation',cr:3,type:'core'},
+      {code:'ARC 105',name:'History of Architecture I',cr:3,type:'core'},
+      {code:'MAT 110',name:'Mathematics for Architecture',cr:3,type:'math'},
+    ],
+    2:[
+      {code:'ARC 111',name:'Architectural Design Studio II',cr:6,type:'core'},
+      {code:'ARC 113',name:'Visual Arts II: Digital Representation',cr:3,type:'core'},
+      {code:'ARC 115',name:'History of Architecture II',cr:3,type:'core'},
+      {code:'ARC 117',name:'Building Materials & Construction Technology',cr:3,type:'core'},
+    ],
+    3:[
+      {code:'ARC 201',name:'Architectural Design Studio III',cr:6,type:'core'},
+      {code:'ARC 203',name:'Structural Systems I',cr:3,type:'core'},
+      {code:'ARC 205',name:'Environmental Control Systems',cr:3,type:'core'},
+      {code:'ARC 207',name:'Urban Design Principles',cr:3,type:'core'},
+    ],
+    4:[
+      {code:'ARC 211',name:'Architectural Design Studio IV',cr:6,type:'core'},
+      {code:'ARC 213',name:'Structural Systems II',cr:3,type:'core'},
+      {code:'ARC 215',name:'Computer-Aided Design (AutoCAD & Revit)',cr:3,type:'lab'},
+      {code:'ARC 217',name:'Building Services & Utilities',cr:3,type:'core'},
+    ],
+    5:[
+      {code:'ARC 301',name:'Architectural Design Studio V',cr:6,type:'core'},
+      {code:'ARC 303',name:'Urban Planning & Housing',cr:3,type:'core'},
+      {code:'ARC 305',name:'Landscape Architecture',cr:3,type:'elective'},
+      {code:'ARC 307',name:'Interior Architecture & Space Design',cr:3,type:'elective'},
+    ],
+    6:[
+      {code:'ARC 311',name:'Architectural Design Studio VI',cr:6,type:'core'},
+      {code:'ARC 313',name:'Professional Practice & Ethics',cr:3,type:'core'},
+      {code:'ARC 315',name:'Sustainable Architecture & Green Design',cr:3,type:'elective'},
+      {code:'ARC 317',name:'Parametric Design (Grasshopper)',cr:3,type:'elective'},
+    ],
+  }},
+};
+
+const TIPS={
+  easy:[
+    'Register the moment course selection opens — light-load sections fill fast at NSU.',
+    'Use extra time to build a portfolio, contribute to clubs, or catch up on backlogs.',
+    'Choose the 3rd course in your strongest area to guarantee a high grade point.',
+    'Attend office hours regularly — faculty remember engaged students at grade time.',
+    'Use this semester to prepare for competitive internship or research applications.',
+  ],
+  medium:[
+    'Map every assignment deadline into a calendar on the very first day of semester.',
+    'Group study sessions are especially effective for Math, Signals, and Pharmacology.',
+    'Verify all prerequisite requirements through USIS before finalizing your list.',
+    'Balance at least one lab course with theory-heavy subjects to spread the load.',
+    'Start projects in week 1 — NSU professors rarely accept late submissions.',
+  ],
+  hard:[
+    'NSU requires CGPA ≥ 3.50 and written advisor approval for 6-course overloads.',
+    'Treat this semester like a full-time job — plan 9–10 hours of focused study daily.',
+    'Identify your 2 heaviest courses and ensure they do not have overlapping exam dates.',
+    'Prioritize 7–8 hours of sleep — sleep deprivation severely hurts information retention.',
+    'Weekly review sessions prevent content from snowballing before finals.',
+    'Use the Pomodoro technique: 25-minute focused sprints, 5-minute breaks.',
+  ],
+};
+
+// =========================================
+// STATE
+// =========================================
+let activeMode = null;
+
+function pickMode(el, mode) {
+  activeMode = mode;
+  document.querySelectorAll('.mcard').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+// =========================================
+// GENERATE
+// =========================================
+function generate() {
+  const dept = document.getElementById('dept').value;
+  const semV = document.getElementById('sem').value;
+  const credV = parseInt(document.getElementById('cred').value) || 0;
+
+  let ok = true;
+  if (!dept)    { doShake('dept'); ok = false; }
+  if (!semV)    { doShake('sem');  ok = false; }
+  if (!ok) { toast('Please fill in Department and Semester.'); return; }
+  if (!activeMode) { toast('Please select a Load Style above.'); return; }
+
+  const semNum = parseInt(semV);
+  const deptD  = DB[dept];
+  const totalReq = deptD ? deptD.total : 130;
+  const smap   = deptD ? deptD.s : null;
+
+  let pool = [];
+  if (smap) {
+    const keys = Object.keys(smap).map(Number).sort((a,b)=>a-b);
+    const best = keys.reduce((p,c) => Math.abs(c-semNum) < Math.abs(p-semNum) ? c : p, keys[0]);
+    pool = smap[best] || [];
+  }
+
+  const maxC = {easy:3, medium:5, hard:6}[activeMode];
+  const chosen = pool.slice(0, maxC);
+  const totalCr = chosen.reduce((s,c) => s + c.cr, 0);
+  const leftCr  = Math.max(0, totalReq - credV - totalCr);
+
+  const mL = {easy:'Easy Pass', medium:'Hard Grind', hard:'Super Hard'};
+  const mC = {easy:'g', medium:'a', hard:'r'};
+  const dS = {CSE:'CSE',EEE:'EEE',ETE:'ETE',CE:'CE',BBA:'BBA',ECON:'ECON',ENG:'ENG',PHARM:'PHARM',BIO:'BIOC',MNS:'MNS',ARCH:'ARCH'};
+
+  document.getElementById('r-title').textContent = `YOUR ${mL[activeMode].toUpperCase()} PLAN`;
+  document.getElementById('r-dp').textContent    = `${dS[dept]||dept} · Semester ${semNum}`;
+  document.getElementById('r-mp').textContent    = mL[activeMode];
+  document.getElementById('sc').textContent      = chosen.length;
+  document.getElementById('scr').textContent     = totalCr;
+  const sm = document.getElementById('sm');
+  sm.textContent = mL[activeMode];
+  sm.className   = `sval ${mC[activeMode]}`;
+  document.getElementById('sl').textContent = leftCr > 0 ? leftCr : '✓ Done';
+
+  const typeClass = {core:'', math:'mc', lab:'lc', elective:'ec'};
+  document.getElementById('cgrid').innerHTML = chosen.map((c,i) => `
+    <div class="ccard ${typeClass[c.type]||''}" style="animation-delay:${i*.07}s">
+      <div class="ctop">
+        <div class="ccode">${c.code}</div>
+        <div class="ccr">${c.cr} CR</div>
+      </div>
+      <div class="cname">${c.name}</div>
+      <div class="ctype">
+        <div class="cdot ${c.type}"></div>
+        ${c.type.charAt(0).toUpperCase()+c.type.slice(1)} Course
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('ww').innerHTML = activeMode === 'hard' ? `
+    <div class="warnbox">
+      <div class="wicon">⚠️</div>
+      <div>
+        <div class="wtitle">Advisor Approval Required</div>
+        <div class="wtext">NSU policy requires a minimum CGPA of 3.50 and written consent from your faculty advisor to register 6 courses (18+ credits) in a single semester. Visit the Registrar&apos;s Office or contact your advisor before finalizing in USIS.</div>
+      </div>
+    </div>
+  ` : '';
+
+  document.getElementById('tbox').innerHTML = `
+    <div class="th">📌 Tips for ${mL[activeMode]}</div>
+    ${TIPS[activeMode].map((t,i) => `
+      <div class="tip">
+        <div class="tn">${i+1}</div>
+        <span>${t}</span>
+      </div>
+    `).join('')}
+  `;
+
+  const r = document.getElementById('results');
+  r.classList.add('show');
+  setTimeout(() => r.scrollIntoView({behavior:'smooth', block:'start'}), 80);
+}
+
+function doShake(id) {
+  const el = document.getElementById(id);
+  el.classList.remove('shake');
+  void el.offsetWidth;
+  el.classList.add('shake');
+  setTimeout(() => el.classList.remove('shake'), 500);
+}
+
+function toast(msg) {
+  let t = document.getElementById('_toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = '_toast';
+    t.style.cssText = `
+      position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+      background:#1e2337;border:1px solid rgba(79,142,247,.3);
+      color:#eef0f8;padding:12px 22px;border-radius:10px;
+      font-size:13px;font-weight:600;z-index:9999;
+      box-shadow:0 8px 32px rgba(0,0,0,.5);
+      transition:opacity .3s;
+      font-family:'Plus Jakarta Sans',sans-serif;
+      white-space:nowrap;
+    `;
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._tid);
+  t._tid = setTimeout(() => t.style.opacity = '0', 2800);
+}
+</script>
+</body>
+</html>
